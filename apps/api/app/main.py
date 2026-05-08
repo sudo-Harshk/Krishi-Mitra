@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from .schemas import DiagnoseRequest, DiagnoseResponse
-from .services import generate_template_diagnosis
+from .services import generate_diagnosis
 
 
 app = FastAPI(title="Krishi Mitra API", version="0.1.0")
@@ -12,6 +12,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
@@ -30,15 +32,17 @@ async def diagnose(
         location=location,
     )
 
-    crop = payload.crop_name.strip()
-    issue = payload.problem_description.strip()
-    image_received = False
-
     if image_file is not None:
         if image_file.content_type is None or not image_file.content_type.startswith("image/"):
             raise HTTPException(status_code=400, detail="image_file must be an image")
-        image_received = True
-        await image_file.read()
+        image_bytes = await image_file.read()
         await image_file.close()
+    else:
+        image_bytes = None
 
-    return generate_template_diagnosis(payload, image_received=image_received)
+    return generate_diagnosis(
+        payload,
+        image_bytes=image_bytes,
+        image_filename=image_file.filename if image_file is not None else None,
+        image_content_type=image_file.content_type if image_file is not None else None,
+    )
