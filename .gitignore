@@ -12,19 +12,22 @@ Desktop.ini
 
 # Node / web
 node_modules/
+apps/web/node_modules/
 .next/
 dist/
 out/
 build/
 coverage/
-.turbo/
 .vite/
+.turbo/
 .parcel-cache/
 vite.svg
+*.tsbuildinfo
 
 # Generated backend artifacts
 .pytest_cache/
 __pycache__/
+apps/api/app/__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -32,8 +35,6 @@ __pycache__/
 venv/
 .venv/
 apps/api/.venv/
-apps/api/__pycache__/
-apps/api/app/__pycache__/
 apps/api/*.db
 apps/api/*.sqlite
 apps/api/*.sqlite3
@@ -67,8 +68,6 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 Desktop.ini
-
-# Python tooling
 .mypy_cache/
 .ruff_cache/
 .coverage

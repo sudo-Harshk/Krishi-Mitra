@@ -3,17 +3,18 @@
   "private": true,
   "version": "0.1.0",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w apps/web",
-    "build": "npm run build -w apps/web",
-    "preview": "npm run preview -w apps/web",
-    "lint": "npm run lint -w apps/web",
-    "dev:web": "npm run dev -w apps/web",
-    "dev:api": "npm run dev -w apps/api",
-    "build:web": "npm run build -w apps/web",
-    "build:api": "npm run build -w apps/api"
+    "dev": "npm run dev:web",
+    "build": "npm run build:web",
+    "preview": "npm run preview:web",
+    "lint": "npm run lint:web",
+    "dev:web": "npm --workspace apps/web run dev",
+    "build:web": "npm --workspace apps/web run build",
+    "preview:web": "npm --workspace apps/web run preview",
+    "lint:web": "npm --workspace apps/web run lint",
+    "dev:api": "npm --workspace apps/api run dev",
+    "build:api": "npm --workspace apps/api run build"
   }
 }

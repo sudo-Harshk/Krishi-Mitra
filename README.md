@@ -27,7 +27,6 @@ flowchart LR
   subgraph Repo[Krishi Mitra Monorepo]
     Web
     API
-    Shared[packages/ui<br/>shared UI placeholder]
   end
 ```
 
@@ -43,15 +42,10 @@ flowchart LR
 - Exposes `/health` and `/diagnose`
 - Accepts form fields and image uploads
 
-### Shared Packages
-- `packages/ui`
-- Placeholder for reusable components and styles once the product grows
-
 ## What It Is
 
 - `apps/web` - React + Vite frontend
 - `apps/api` - FastAPI backend
-- `packages/ui` - shared UI package placeholder
 
 ## MVP Goal
 
