@@ -15,21 +15,19 @@ This repository contains a mobile-first React web app and a FastAPI backend work
 ## Architecture
 
 ```mermaid
-flowchart TB
-  User[Farmer on phone browser] --> Web[apps/web<br/>React + Vite UI]
-  Web -->|multipart form data| API[apps/api<br/>FastAPI /diagnose]
-  API --> RAG[RAG + FAISS<br/>agricultural records]
-  API --> LLM[Gemma 4 generation]
-  API --> Weather[Weather lookup]
-  RAG --> API
-  LLM --> API
-  Weather --> API
+flowchart LR
+  User[Farmer] --> Web[React + Vite Web App]
+  Web --> API[FastAPI API]
+  API --> Engine[Diagnosis Engine]
+  Engine --> RAG[RAG + FAISS]
+  Engine --> Gemma[Gemma 4]
+  Engine --> Weather[Weather Data]
   API --> Web
 
-  subgraph Monorepo["krishi-mitra monorepo"]
+  subgraph Repo[Krishi Mitra Monorepo]
     Web
     API
-    UI[packages/ui<br/>shared UI package placeholder]
+    Shared[packages/ui<br/>shared UI placeholder]
   end
 ```
 
