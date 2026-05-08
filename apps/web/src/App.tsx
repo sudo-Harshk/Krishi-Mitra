@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 
 type DiagnoseResponse = {
   summary_en: string;
@@ -26,6 +26,7 @@ export default function App() {
   const [cropName, setCropName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,16 +50,20 @@ export default function App() {
 
     try {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "http://localhost:8000";
+      const formData = new FormData();
+      formData.append("crop_name", cropName.trim());
+      formData.append("problem_description", problemDescription.trim());
+      if (location.trim()) {
+        formData.append("location", location.trim());
+      }
+      if (imageFile) {
+        formData.append("image_file", imageFile);
+      }
+
       const response = await fetch(`${apiBaseUrl}/diagnose`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            crop_name: cropName,
-            problem_description: problemDescription,
-            location: location || null,
-            image_url: imagePreview
-          })
-        });
+        method: "POST",
+        body: formData
+      });
 
       if (!response.ok) {
         throw new Error("Failed to get diagnosis.");
@@ -73,19 +78,49 @@ export default function App() {
     }
   }
 
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setImageFile(file);
+
+    if (!file) {
+      setImagePreview(null);
+      return;
+    }
+
+    setImagePreview(URL.createObjectURL(file));
+  }
+
   return (
     <main className="app-shell">
       <section className="hero">
-        <p className="eyebrow">Krishi Mitra</p>
-        <h1>Clean crop advice web app</h1>
-        <p className="lead">
-          Upload a crop photo, describe the problem, and get bilingual guidance
-          in a simple mobile-first layout.
-        </p>
+        <div className="hero-copy">
+          <p className="eyebrow">Krishi Mitra</p>
+          <h1>Crop diagnosis, made simple.</h1>
+          <p className="lead">
+            Describe the issue, add a photo if you have one, and get a structured
+            English and Telugu response that is easy to scan on a phone.
+          </p>
+          <div className="hero-points" aria-label="Product highlights">
+            <span>Mobile-first</span>
+            <span>Bilingual</span>
+            <span>Weather-aware</span>
+          </div>
+        </div>
+
+        <div className="hero-visual" aria-hidden="true">
+          <div className="visual-card visual-card-top">
+            <span className="visual-label">Input</span>
+            <strong>Crop photo + description</strong>
+          </div>
+          <div className="visual-card visual-card-bottom">
+            <span className="visual-label">Output</span>
+            <strong>Diagnosis + actions + caution</strong>
+          </div>
+        </div>
       </section>
 
       <section className="panel-grid">
-        <form className="card form-card" onSubmit={handleSubmit}>
+        <form className="surface form-card" onSubmit={handleSubmit}>
           <h2>Diagnosis input</h2>
 
           <label>
@@ -123,16 +158,15 @@ export default function App() {
             <input
               type="file"
               accept="image/*"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (!file) {
-                  setImagePreview(null);
-                  return;
-                }
-                setImagePreview(URL.createObjectURL(file));
-              }}
+              onChange={handleImageChange}
             />
           </label>
+
+          {imagePreview ? (
+            <div className="preview">
+              <img src={imagePreview} alt="Selected crop preview" />
+            </div>
+          ) : null}
 
           <button type="submit" disabled={!canSubmit || isLoading}>
             {isLoading ? "Checking..." : "Get advice"}
@@ -141,7 +175,7 @@ export default function App() {
           {error ? <p className="error">{error}</p> : null}
         </form>
 
-        <aside className="card result-card">
+        <aside className="surface result-card">
           <h2>Result</h2>
 
           <div className="result-block">
