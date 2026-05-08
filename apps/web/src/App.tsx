@@ -1,16 +1,9 @@
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
-
-type DiagnoseResponse = {
-  summary_en: string;
-  summary_te: string;
-  likely_issue: string;
-  action_steps_en: string[];
-  action_steps_te: string[];
-  weather_warning_en?: string | null;
-  weather_warning_te?: string | null;
-  confidence: number;
-  source_notes: string[];
-};
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { DiagnosisForm } from "./components/DiagnosisForm";
+import { DiagnosisResult } from "./components/DiagnosisResult";
+import { Hero } from "./components/Hero";
+import { diagnoseCrop } from "./lib/api";
+import type { DiagnoseResponse } from "./lib/types";
 
 const initialResult: DiagnoseResponse = {
   summary_en: "No diagnosis yet.",
@@ -49,7 +42,6 @@ export default function App() {
     setIsLoading(true);
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "http://localhost:8000";
       const formData = new FormData();
       formData.append("crop_name", cropName.trim());
       formData.append("problem_description", problemDescription.trim());
@@ -60,16 +52,7 @@ export default function App() {
         formData.append("image_file", imageFile);
       }
 
-      const response = await fetch(`${apiBaseUrl}/diagnose`, {
-        method: "POST",
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to get diagnosis.");
-      }
-
-      const data = (await response.json()) as DiagnoseResponse;
+      const data = await diagnoseCrop(formData);
       setResult(data);
     } catch {
       setError("Unable to reach the diagnosis service right now.");
@@ -90,125 +73,35 @@ export default function App() {
     setImagePreview(URL.createObjectURL(file));
   }
 
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
+
   return (
     <main className="app-shell">
-      <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">Krishi Mitra</p>
-          <h1>Crop diagnosis, made simple.</h1>
-          <p className="lead">
-            Describe the issue, add a photo if you have one, and get a structured
-            English and Telugu response that is easy to scan on a phone.
-          </p>
-          <div className="hero-points" aria-label="Product highlights">
-            <span>Mobile-first</span>
-            <span>Bilingual</span>
-            <span>Weather-aware</span>
-          </div>
-        </div>
-
-        <div className="hero-visual" aria-hidden="true">
-          <div className="visual-card visual-card-top">
-            <span className="visual-label">Input</span>
-            <strong>Crop photo + description</strong>
-          </div>
-          <div className="visual-card visual-card-bottom">
-            <span className="visual-label">Output</span>
-            <strong>Diagnosis + actions + caution</strong>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       <section className="panel-grid">
-        <form className="surface form-card" onSubmit={handleSubmit}>
-          <h2>Diagnosis input</h2>
+        <DiagnosisForm
+          cropName={cropName}
+          problemDescription={problemDescription}
+          location={location}
+          imagePreview={imagePreview}
+          canSubmit={canSubmit}
+          isLoading={isLoading}
+          error={error}
+          onCropNameChange={setCropName}
+          onProblemDescriptionChange={setProblemDescription}
+          onLocationChange={setLocation}
+          onImageChange={handleImageChange}
+          onSubmit={handleSubmit}
+        />
 
-          <label>
-            Crop name
-            <input
-              value={cropName}
-              onChange={(event) => setCropName(event.target.value)}
-              placeholder="e.g. tomato"
-              required
-            />
-          </label>
-
-          <label>
-            Problem description
-            <textarea
-              value={problemDescription}
-              onChange={(event) => setProblemDescription(event.target.value)}
-              placeholder="e.g. yellow spots on leaves, leaves curling"
-              rows={5}
-              required
-            />
-          </label>
-
-          <label>
-            Optional location
-            <input
-              value={location}
-              onChange={(event) => setLocation(event.target.value)}
-              placeholder="e.g. Guntur"
-            />
-          </label>
-
-          <label>
-            Optional photo
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </label>
-
-          {imagePreview ? (
-            <div className="preview">
-              <img src={imagePreview} alt="Selected crop preview" />
-            </div>
-          ) : null}
-
-          <button type="submit" disabled={!canSubmit || isLoading}>
-            {isLoading ? "Checking..." : "Get advice"}
-          </button>
-
-          {error ? <p className="error">{error}</p> : null}
-        </form>
-
-        <aside className="surface result-card">
-          <h2>Result</h2>
-
-          <div className="result-block">
-            <p className="result-label">English</p>
-            <p>{result.summary_en}</p>
-            <p className="muted">Likely issue: {result.likely_issue}</p>
-            <ul>
-              {result.action_steps_en.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ul>
-            {result.weather_warning_en ? (
-              <p className="warning">{result.weather_warning_en}</p>
-            ) : null}
-          </div>
-
-          <div className="result-block">
-            <p className="result-label">Telugu</p>
-            <p>{result.summary_te}</p>
-            <ul>
-              {result.action_steps_te.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ul>
-            {result.weather_warning_te ? (
-              <p className="warning">{result.weather_warning_te}</p>
-            ) : null}
-          </div>
-
-          <div className="meta-row">
-            <span>Confidence: {Math.round(result.confidence * 100)}%</span>
-          </div>
-        </aside>
+        <DiagnosisResult result={result} />
       </section>
     </main>
   );
