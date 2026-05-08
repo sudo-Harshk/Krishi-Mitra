@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Krishi Mitra Architecture" id="M_eOCdXBcGzwayvLAsB5">
+    <mxGraphModel dx="1373" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-1" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="USER LAYER" vertex="1">
+          <mxGeometry height="280" width="200" x="40" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-2" parent="AQRa94Wu0PiqJF5pgU0t-1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Farmer&lt;br&gt;(User)" vertex="1">
+          <mxGeometry height="60" width="30" x="85" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-3" parent="AQRa94Wu0PiqJF5pgU0t-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Gradio Mobile UI&lt;br&gt;(Text/Photo Input)" vertex="1">
+          <mxGeometry height="60" width="160" x="20" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-4" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="CORE AI ENGINE (Gemma 4)" vertex="1">
+          <mxGeometry height="620" width="360" x="320" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-5" parent="AQRa94Wu0PiqJF5pgU0t-4" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" value="Gemma 4 E2B-it&lt;br&gt;(Multimodal Reasoning)" vertex="1">
+          <mxGeometry height="140" width="200" x="80" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-7" parent="AQRa94Wu0PiqJF5pgU0t-4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Final Output Gen&lt;br&gt;(English + Telugu)" vertex="1">
+          <mxGeometry height="60" width="160" x="100" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-8" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="KNOWLEDGE &amp; DATA LAYER" vertex="1">
+          <mxGeometry height="320" width="280" x="900" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-9" parent="AQRa94Wu0PiqJF5pgU0t-8" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="EmbeddingGemma 300M" vertex="1">
+          <mxGeometry height="60" width="160" x="60" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-10" parent="AQRa94Wu0PiqJF5pgU0t-8" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="FAISS Vector DB&lt;br&gt;(30k Expert Records)" vertex="1">
+          <mxGeometry height="100" width="120" x="80" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-11" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="EXTERNAL SERVICES" vertex="1">
+          <mxGeometry height="240" width="280" x="920" y="500" as="geometry">
+            <mxRectangle height="30" width="170" x="760" y="440" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-12" parent="AQRa94Wu0PiqJF5pgU0t-11" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="OpenWeatherMap API&lt;br&gt;(Live Weather Context)" vertex="1">
+          <mxGeometry height="80" width="200" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-13" parent="AQRa94Wu0PiqJF5pgU0t-11" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Tavily Web Search&lt;br&gt;(Real-time Fallback)" vertex="1">
+          <mxGeometry height="60" width="160" x="60" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-14" edge="1" parent="1" source="AQRa94Wu0PiqJF5pgU0t-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AQRa94Wu0PiqJF5pgU0t-5" value="Input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="410" />
+              <mxPoint x="290" y="330" />
+            </Array>
+            <mxPoint x="420" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-16" edge="1" parent="1" source="AQRa94Wu0PiqJF5pgU0t-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="AQRa94Wu0PiqJF5pgU0t-9" value="Semantic Search">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="195" />
+              <mxPoint x="830" y="195" />
+              <mxPoint x="830" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-17" edge="1" parent="1" source="AQRa94Wu0PiqJF5pgU0t-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.7;exitDx=0;exitDy=0;" target="AQRa94Wu0PiqJF5pgU0t-5" value="Expert Context">
+          <mxGeometry relative="1" x="-0.0833" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="720" y="270" />
+              <mxPoint x="720" y="330" />
+            </Array>
+            <mxPoint x="970" y="270" as="sourcePoint" />
+            <mxPoint x="640" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-18" edge="1" parent="1" source="AQRa94Wu0PiqJF5pgU0t-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;curved=0;" target="AQRa94Wu0PiqJF5pgU0t-5" value="Weather &amp; Search">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="440" />
+              <mxPoint x="500" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-19" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="AQRa94Wu0PiqJF5pgU0t-7" value="Reasoning">
+          <mxGeometry relative="1" x="-0.5556" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="500" y="440" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AQRa94Wu0PiqJF5pgU0t-20" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;curved=0;" target="AQRa94Wu0PiqJF5pgU0t-3" value="Diagnosis &amp; Advice">
+          <mxGeometry relative="1" x="0.1375" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <Array as="points">
+              <mxPoint x="500" y="550" />
+              <mxPoint x="140" y="550" />
+            </Array>
+            <mxPoint x="500" y="620" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
