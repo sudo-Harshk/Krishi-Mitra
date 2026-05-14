@@ -1,12 +1,47 @@
+import { forwardRef } from "react";
 import type { DiagnoseResponse } from "../lib/types";
 
 type Props = {
-  result: DiagnoseResponse;
+  result: DiagnoseResponse | null;
+  isLoading: boolean;
+  onReset: () => void;
 };
 
-export function DiagnosisResult({ result }: Props) {
+export const DiagnosisResult = forwardRef<HTMLElement, Props>(function DiagnosisResult(
+  { result, isLoading, onReset },
+  ref
+) {
+  if (isLoading) {
+    return (
+      <aside ref={ref} className="surface result-card">
+        <h2 className="skeleton-heading">Analysing your crop...</h2>
+        <div className="skeleton-block" />
+        <div className="skeleton-block skeleton-narrow" />
+        <div className="skeleton-list">
+          <div className="skeleton-line" />
+          <div className="skeleton-line skeleton-narrow" />
+          <div className="skeleton-line" style={{ width: "45%" }} />
+        </div>
+        <div className="skeleton-block" />
+        <div className="skeleton-block skeleton-narrow" />
+      </aside>
+    );
+  }
+
+  if (!result) {
+    return (
+      <aside ref={ref} className="surface result-card result-empty">
+        <p className="result-empty-icon">🌱</p>
+        <p className="result-empty-title">Your diagnosis will appear here</p>
+        <p className="muted">
+          Fill in the crop name and problem description, then tap <strong>Get advice</strong>.
+        </p>
+      </aside>
+    );
+  }
+
   return (
-    <aside className="surface result-card">
+    <aside ref={ref} className="surface result-card">
       <h2>Result</h2>
 
       <div className="result-block">
@@ -42,7 +77,10 @@ export function DiagnosisResult({ result }: Props) {
           <span>{result.image_received ? "Image received" : "No image"}</span>
         ) : null}
       </div>
+
+      <button type="button" className="secondary-button" onClick={onReset}>
+        New diagnosis
+      </button>
     </aside>
   );
-}
-
+});

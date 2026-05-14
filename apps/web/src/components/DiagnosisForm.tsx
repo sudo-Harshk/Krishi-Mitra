@@ -3,30 +3,34 @@ import type { ChangeEvent, FormEvent } from "react";
 type Props = {
   cropName: string;
   problemDescription: string;
-  location: string;
+  detectedLocation: string;
+  locationStatus: string;
+  isDetectingLocation: boolean;
   imagePreview: string | null;
   canSubmit: boolean;
   isLoading: boolean;
   error: string | null;
   onCropNameChange: (value: string) => void;
   onProblemDescriptionChange: (value: string) => void;
-  onLocationChange: (value: string) => void;
   onImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onDetectLocation: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
 export function DiagnosisForm({
   cropName,
   problemDescription,
-  location,
+  detectedLocation,
+  locationStatus,
+  isDetectingLocation,
   imagePreview,
   canSubmit,
   isLoading,
   error,
   onCropNameChange,
   onProblemDescriptionChange,
-  onLocationChange,
   onImageChange,
+  onDetectLocation,
   onSubmit
 }: Props) {
   return (
@@ -54,14 +58,20 @@ export function DiagnosisForm({
         />
       </label>
 
-      <label>
-        Optional location
-        <input
-          value={location}
-          onChange={(event) => onLocationChange(event.target.value)}
-          placeholder="e.g. Guntur"
-        />
-      </label>
+      <div className="location-pill" aria-live="polite">
+        <span className="location-label">Location</span>
+        <strong>{detectedLocation || "Not detected yet"}</strong>
+        <span className="location-status">{locationStatus}</span>
+      </div>
+
+      <button
+        type="button"
+        className="secondary-button"
+        onClick={onDetectLocation}
+        disabled={isDetectingLocation}
+      >
+        {isDetectingLocation ? "Detecting location..." : "Detect exact location"}
+      </button>
 
       <label>
         Optional photo
@@ -82,4 +92,3 @@ export function DiagnosisForm({
     </form>
   );
 }
-
