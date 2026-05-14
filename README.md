@@ -6,17 +6,17 @@
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg?logo=fastapi&logoColor=fff)](https://fastapi.tiangolo.com/)
 [![Gemma 4](https://img.shields.io/badge/model-Gemma%204-4285F4.svg?logo=google&logoColor=fff)](https://ai.google.dev/gemma)
 
-**Krishi Mitra** ("Farmer's Friend") is our submission for **The Gemma 4 Good Hackathon**.
+**Krishi Mitra** ("Farmer's Friend") is my submission for **The Gemma 4 Good Hackathon**.
 
 > Harness the power of Gemma 4 to drive positive change and global impact.
 
-It is a mobile-first crop diagnosis tool that gives Indian farmers a structured, bilingual (English + Telugu) diagnosis and action plan from a photo and a description of the problem — in seconds, at no cost.
+It is a mobile-first crop diagnosis tool that gives Indian farmers a structured, bilingual (English + Telugu) diagnosis and action plan from a photo and a description of the problem - in seconds, at no cost.
 
 ---
 
 ## The Problem
 
-Small and marginal farmers in India — who make up over 80% of the farming population — lose significant yield every season to diseases, pests, and nutrient deficiencies that go unidentified until it is too late. Access to an agronomist is limited to wealthier or well-connected farmers. For everyone else, advice comes from a dealer who may recommend products regardless of the actual diagnosis.
+Small and marginal farmers in India  who make up over 80% of the farming population  lose significant yield every season to diseases, pests, and nutrient deficiencies that go unidentified until it is too late. Access to an agronomist is limited to wealthier or well-connected farmers. For everyone else, advice comes from a dealer who may recommend products regardless of the actual diagnosis.
 
 Krishi Mitra puts a knowledgeable, honest agronomist in every farmer's pocket.
 
